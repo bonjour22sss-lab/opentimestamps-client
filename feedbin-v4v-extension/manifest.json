@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Feedbin Value 4 Value",
+  "version": "1.0.0",
+  "description": "Adds Value 4 Value (Lightning payments) support to Feedbin.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://feedbin.com/*",
+    "https://*/*",
+    "http://*/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://feedbin.com/*"],
+      "js": ["content.js"],
+      "css": ["style.css"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
