@@ -4,6 +4,9 @@ from nostr_sdk import Keys, SecretKey
 
 load_dotenv()
 
+def get_telegram_token():
+    return os.getenv("TELEGRAM_BOT_TOKEN")
+
 def get_keys():
     nsec = os.getenv("NOSTR_PRIVATE_KEY")
     if nsec:
@@ -34,4 +37,4 @@ RELAYS = [
 ]
 
 DB_PATH = "nostr_bot/bot_data.db"
-UPGRADE_INTERVAL_HOURS = 6
+UPGRADE_INTERVAL_HOURS = 1

@@ -5,7 +5,8 @@ from nostr_sdk import (
     HandleNotification,
     LogLevel,
     init_logger,
-    NostrSigner
+    NostrSigner,
+    RelayUrl
 )
 from nostr_bot.config import get_keys, RELAYS
 from nostr_bot.ots_utils import stamp_event_id
@@ -16,9 +17,8 @@ class BotNotificationHandler(HandleNotification):
     def __init__(self, client, bot_keys):
         self.client = client
         self.bot_keys = bot_keys
-        self.loop = asyncio.get_event_loop()
 
-    def handle(self, relay_url, subscription_id, event):
+    async def handle(self, relay_url, subscription_id, event):
         # Kind 1 is Short Text Note
         if event.kind().as_std() == KindStandard.TEXT_NOTE:
             # Check if bot is mentioned
@@ -32,8 +32,7 @@ class BotNotificationHandler(HandleNotification):
 
             if is_mentioned:
                 print(f"Bot mentioned in event {event.id().to_hex()}")
-                # Run the async processing in the loop
-                self.loop.create_task(self.process_mention(event))
+                await self.process_mention(event)
 
     async def process_mention(self, event):
         event_id_hex = event.id().to_hex()
@@ -59,7 +58,7 @@ class BotNotificationHandler(HandleNotification):
             import traceback
             traceback.print_exc()
 
-    def handle_msg(self, relay_url, msg):
+    async def handle_msg(self, relay_url, msg):
         pass
 
 async def main():
@@ -70,14 +69,14 @@ async def main():
 
     client = Client(signer)
     for relay in RELAYS:
-        await client.add_relay(relay)
+        await client.add_relay(RelayUrl.parse(relay))
 
     await client.connect()
 
     # Subscribe to mentions
     bot_pubkey = keys.public_key()
     mention_filter = Filter().pubkey(bot_pubkey).kind(Kind.from_std(KindStandard.TEXT_NOTE))
-    await client.subscribe([mention_filter])
+    await client.subscribe(mention_filter)
 
     print(f"Bot started. Public key: {bot_pubkey.to_bech32()}")
 

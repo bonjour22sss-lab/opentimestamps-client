@@ -20,8 +20,13 @@ async def run_upgrade_task(client, keys):
                 if new_ots_hex:
                     print(f"Successfully upgraded timestamp for event {event_id}!")
 
+                    if is_complete:
+                        status_msg = "It is now confirmed in the Bitcoin blockchain!"
+                    else:
+                        status_msg = "It has received a new attestation from a calendar."
+
                     # Send a reply to the initial reply
-                    reply_content = f"Timestamp upgraded for event {event_id}.\n\nIt is now confirmed in the Bitcoin blockchain!\n\nUpgraded OpenTimestamps proof (hex):\n{new_ots_hex}"
+                    reply_content = f"Timestamp upgraded for event {event_id}.\n\n{status_msg}\n\nUpgraded OpenTimestamps proof (hex):\n{new_ots_hex}"
 
                     tags = [
                         Tag.parse(["e", initial_reply_id, "", "reply"]),
