@@ -4,8 +4,8 @@ import io
 import asyncio
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters, CommandHandler
-from nostr_bot.config import get_telegram_token
-from nostr_bot.ots_utils import stamp_data
+from telegram_bot.config import get_telegram_token
+from telegram_bot.ots_utils import stamp_data
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',

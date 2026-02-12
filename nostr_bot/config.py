@@ -1,11 +1,8 @@
 import os
 from dotenv import load_dotenv
-from nostr_sdk import Keys, SecretKey
+from nostr_sdk import Keys
 
 load_dotenv()
-
-def get_telegram_token():
-    return os.getenv("TELEGRAM_BOT_TOKEN")
 
 def get_keys():
     nsec = os.getenv("NOSTR_PRIVATE_KEY")
